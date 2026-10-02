@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vietnam, North to South: 5 days in December</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2EF; --surface:#FFFFFF; --ink:#16302B; --muted:#55685F; --line:#CFDAD3;
+  --red:#B3261E; --gold:#D99A1E; --sea:#1F7A8C; --jade:#2F6B55; --lotus:#F3D9DE;
+  --chip:#E1E9E4;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1C19; --surface:#17271F; --ink:#E4ECE8; --muted:#9DB0A7; --line:#2B3F36;
+    --red:#E5655C; --gold:#E8B54A; --sea:#58B4C6; --jade:#6FBF9A; --lotus:#4A2E35; --chip:#22352C;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1C19; --surface:#17271F; --ink:#E4ECE8; --muted:#9DB0A7; --line:#2B3F36;
+  --red:#E5655C; --gold:#E8B54A; --sea:#58B4C6; --jade:#6FBF9A; --lotus:#4A2E35; --chip:#22352C;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 "Be Vietnam Pro",system-ui,-apple-system,Segoe UI,sans-serif}
+h1,h2,h3{font-family:"Young Serif",Georgia,"Times New Roman",serif;font-weight:400;line-height:1.15;margin:0}
+a{color:var(--sea)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+section{padding:44px 0;border-top:1px solid var(--line)}
+section>.wrap>h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:6px}
+.lede{color:var(--muted);max-width:62ch;margin:0 0 22px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:36px 0 28px}
+.hero h1{font-size:clamp(2.2rem,6.5vw,4.1rem);letter-spacing:-.01em}
+.hero h1 .south{display:block;color:var(--sea)}
+.hero h1 .north{display:block;color:var(--red)}
+.hero p{max-width:52ch;color:var(--muted);margin:16px 0 0}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding:0;list-style:none}
+.facts li{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.88rem}
+.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:10px}
+.mapbox svg{width:100%;height:auto;display:block;max-height:560px}
+.stop{cursor:pointer}
+.stop text{font-family:"Be Vietnam Pro",sans-serif}
+.maplegend{font-size:.8rem;color:var(--muted);padding:4px 8px 6px}
+
+/* split bar */
+.split{display:flex;height:14px;border-radius:999px;overflow:hidden;margin:10px 0 6px;max-width:520px}
+.split span:first-child{background:var(--sea);flex:7}
+.split span:last-child{background:var(--red);flex:3}
+.splitlab{display:flex;gap:18px;font-size:.88rem;color:var(--muted)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+/* weather table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;background:var(--chip)}
+tr:last-child td{border-bottom:0}
+.go{color:var(--jade);font-weight:600}.no{color:var(--red);font-weight:600}
+
+/* days */
+.day{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin-bottom:14px;overflow:hidden}
+.day>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:16px 18px}
+.day>summary::-webkit-details-marker{display:none}
+.dnum{font-family:"Young Serif",serif;font-size:2.1rem;color:var(--red);line-height:1;min-width:1.4em}
+.day[data-region="south"] .dnum{color:var(--sea)}
+.dtitle h3{font-size:1.25rem}
+.dtitle small{display:block;color:var(--muted);font-size:.86rem;margin-top:2px}
+.chev{transition:transform .2s;color:var(--muted)}
+.day[open] .chev{transform:rotate(90deg)}
+.steps{list-style:none;margin:0;padding:0 18px 16px}
+.steps li{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:10px 0;border-top:1px dashed var(--line)}
+.t{font-weight:600;font-size:.86rem;color:var(--muted);padding-top:2px}
+.steps b{font-weight:600}
+.steps p{margin:2px 0 0;font-size:.93rem;color:var(--muted)}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:2px}
+.tag.a{background:var(--red);color:#fff}
+.tag.l{background:var(--chip);color:var(--ink)}
+.dir{font-size:.85rem;white-space:nowrap}
+
+/* explore */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+.chips button{font:inherit;font-size:.88rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips.city button[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--jade);border-radius:10px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:6px}
+.card[data-tier="$$$"],.card[data-tier="$$$$"]{border-left-color:var(--gold)}
+.card h3{font-family:"Be Vietnam Pro",sans-serif;font-weight:600;font-size:1rem}
+.card .meta{font-size:.8rem;color:var(--muted)}
+.card p{margin:0;font-size:.9rem}
+.card a{font-size:.85rem;margin-top:auto}
+.veg{background:var(--jade);color:#fff;font-size:.7rem;font-weight:600;border-radius:6px;padding:1px 6px;margin-left:4px}
+.gem{background:var(--lotus);color:var(--ink);font-size:.7rem;font-weight:600;border-radius:6px;padding:1px 6px;margin-left:4px}
+.count{font-size:.85rem;color:var(--muted)}
+
+/* stays */
+.stays{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.staycol h3{font-size:1.3rem;margin-bottom:10px}
+.stay{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.stay h4{margin:0;font-size:1rem}
+.stay .lvl{font-size:.75rem;font-weight:700;color:var(--gold)}
+.stay .lvl.mid{color:var(--sea)}
+.stay p{margin:4px 0 0;font-size:.9rem;color:var(--muted)}
+
+/* callouts */
+.callout{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--red);border-radius:12px;padding:16px 18px;margin:14px 0;max-width:780px}
+.callout h3{font-size:1.15rem;margin-bottom:6px}
+.callout p,.callout li{font-size:.93rem}
+.callout ul{padding-left:18px;margin:6px 0 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.phr{font-family:"Young Serif",serif;font-size:1.15rem;color:var(--red)}
+footer{padding:30px 0 50px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line)}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr}
+  .stays,.two{grid-template-columns:1fr}
+  .mapbox svg{max-height:480px}
+}
+@media (max-width:480px){
+  .steps li{grid-template-columns:52px 1fr}
+  .day>summary{padding:14px}
+}
+</style>
+</head>
+<body>
+<header class="wrap hero">
+  <div>
+    <h1><span class="north">Sweaters up north,</span><span class="south">swimsuits down south.</span></h1>
+    <p>Five days in Vietnam for a group of active 25–35s, built around December weather: the cool, dry north for the hiking, cycling and kayaking, then a short hop to Phu Quoc for beach, shows and late nights. Roughly 70% leisure, 30% sweat.</p>
+    <ul class="facts">
+      <li>Suggested dates: Fri Dec 18 – Tue Dec 22</li>
+      <li>Hanoi 3 nights + Phu Quoc 1–2 nights</li>
+      <li>1 domestic flight</li>
+      <li>Skip central Vietnam (December rains)</li>
+    </ul>
+    <div style="margin-top:18px">
+      <div class="split" aria-hidden="true"><span></span><span></span></div>
+      <div class="splitlab"><span><i class="dot" style="background:var(--sea)"></i>Leisure ~70%</span><span><i class="dot" style="background:var(--red)"></i>Athletic ~30%</span></div>
+    </div>
+  </div>
+  <div class="mapbox">
+    <svg viewBox="0 0 320 600" role="img" aria-label="Route map: Hanoi, Ninh Binh and Lan Ha Bay in the north, flight to Phu Quoc in the south. Sapa and Da Nang are skipped for weather.">
+      <path d="M118 28 C190 34 212 100 178 160 C152 206 196 252 228 312 C258 368 256 430 222 478 C196 514 168 540 146 572" fill="none" stroke="var(--line)" stroke-width="22" stroke-linecap="round"/>
+      <path d="M150 92 C30 230 30 420 92 540" fill="none" stroke="var(--sea)" stroke-width="2" stroke-dasharray="6 6"/>
+      <text x="36" y="330" font-size="11" fill="var(--sea)" transform="rotate(-78 36 330)">flight · 2h10</text>
+      <path d="M150 92 L158 136 M150 92 L203 104" stroke="var(--red)" stroke-width="2.5" fill="none"/>
+      <!-- skipped -->
+      <g opacity=".55"><circle cx="96" cy="56" r="6" fill="none" stroke="var(--muted)" stroke-width="2"/><path d="M90 50 L102 62 M102 50 L90 62" stroke="var(--muted)" stroke-width="2"/>
+      <text x="40" y="44" font-size="11" fill="var(--muted)">Sapa · 5–12°C</text></g>
+      <g opacity=".55"><circle cx="232" cy="318" r="6" fill="none" stroke="var(--muted)" stroke-width="2"/><path d="M226 312 L238 324 M238 312 L226 324" stroke="var(--muted)" stroke-width="2"/>
+      <text x="196" y="345" font-size="11" fill="var(--muted)">Da Nang / Hoi An</text><text x="196" y="358" font-size="11" fill="var(--muted)">rain &amp; flood tail</text></g>
+      <!-- stops -->
+      <a class="stop" href="#day1"><circle cx="150" cy="92" r="9" fill="var(--red)"/><text x="160" y="84" font-size="14" font-weight="700" fill="var(--ink)">Hanoi</text><text x="160" y="69" font-size="11" fill="var(--muted)">15–21°C dry</text></a>
+      <a class="stop" href="#day2"><circle cx="158" cy="138" r="7" fill="var(--red)"/><text x="118" y="160" font-size="13" font-weight="600" fill="var(--ink)">Ninh Binh</text></a>
+      <a class="stop" href="#day3"><circle cx="205" cy="104" r="7" fill="var(--red)"/><text x="214" y="118" font-size="13" font-weight="600" fill="var(--ink)">Lan Ha Bay</text><text x="214" y="132" font-size="11" fill="var(--muted)">sea ~20°C</text></a>
+      <a class="stop" href="#day4"><circle cx="92" cy="540" r="10" fill="var(--sea)"/><text x="108" y="545" font-size="14" font-weight="700" fill="var(--ink)">Phu Quoc</text><text x="108" y="561" font-size="11" fill="var(--muted)">25–30°C dry season</text></a>
+    </svg>
+    <div class="maplegend">Tap a stop to jump to that day. Crossed stops are skipped for December weather.</div>
+  </div>
+</header>
+
+<section id="weather"><div class="wrap">
+  <h2>Why this route in December</h2>
+  <p class="lede">Vietnam runs three climates at once. In late December the north is cool and dry, the centre is still wet, and the south is at its sunniest.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Region</th><th>Late Dec feel</th><th>Verdict</th><th>What it's good for</th></tr></thead>
+    <tbody>
+      <tr><td>Hanoi</td><td>15–21°C, dry, misty mornings</td><td class="go">Go</td><td>Walking food crawls, shows, nightlife; light jacket at night</td></tr>
+      <tr><td>Ninh Binh</td><td>Same as Hanoi, low humidity</td><td class="go">Go</td><td>Best hiking and cycling temps of the year</td></tr>
+      <tr><td>Lan Ha / Ha Long Bay</td><td>16–20°C, sea ~20°C, can be hazy</td><td class="go">Go</td><td>Kayaking yes; swimming is brisk</td></tr>
+      <tr><td>Sapa / Ha Giang</td><td>5–12°C, occasional frost</td><td class="no">Skip</td><td>Too cold and too far for a 5-day hop</td></tr>
+      <tr><td>Da Nang / Hoi An</td><td>Tail of rainy season, rough sea</td><td class="no">Skip</td><td>Beach and boat days often cancelled</td></tr>
+      <tr><td>Phu Quoc</td><td>25–30°C, dry, calm west coast</td><td class="go">Go</td><td>Peak beach, snorkelling, sunset shows</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section id="days"><div class="wrap">
+  <h2>Day by day</h2>
+  <p class="lede">Every stop has a Google Maps link. Red tags are the active blocks; everything else is easy.</p>
+  <div id="dayList"></div>
+</div></section>
+
+<section id="explore"><div class="wrap">
+  <h2>Food, desserts, shows, shopping, nights out</h2>
+  <p class="lede">$ cheap · $$ mid · $$$ splurge · $$$$ special-occasion. <span class="veg">VEG</span> marks spots that work for the vegetarians in the group.</p>
+  <div class="chips city" role="group" aria-label="Filter by city">
+    <button aria-pressed="true" data-city="all">Both cities</button>
+    <button aria-pressed="false" data-city="Hanoi">Hanoi</button>
+    <button aria-pressed="false" data-city="Phu Quoc">Phu Quoc</button>
+  </div>
+  <div class="chips cat" role="group" aria-label="Filter by type">
+    <button aria-pressed="true" data-cat="all">All</button>
+    <button aria-pressed="false" data-cat="Food">Food</button>
+    <button aria-pressed="false" data-cat="Dessert">Desserts &amp; coffee</button>
+    <button aria-pressed="false" data-cat="Show">Shows</button>
+    <button aria-pressed="false" data-cat="Shop cheap">Shopping: cheap</button>
+    <button aria-pressed="false" data-cat="Shop luxe">Shopping: upscale</button>
+    <button aria-pressed="false" data-cat="Nightlife">Clubs &amp; bars</button>
+    <button aria-pressed="false" data-cat="Veg">Veg-friendly only</button>
+  </div>
+  <div class="count" id="count" aria-live="polite"></div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<section id="stays"><div class="wrap">
+  <h2>Where to stay</h2>
+  <p class="lede">Picked for easy commutes and a proper buffet breakfast. Rates are rough late-December guides per room per night; holiday dates (Dec 24, Dec 31) carry surcharges and these fill early, so book now.</p>
+  <div class="stays">
+    <div class="staycol">
+      <h3>Hanoi: Hoan Kiem / Old Quarter</h3>
+      <div class="stay"><span class="lvl">LUXURY</span><h4>Sofitel Legend Metropole Hanoi</h4><p>The classic. Le Beaulieu's breakfast buffet is the city's benchmark. 10 min walk to the lake, Opera House and Trang Tien. ~US$350–500.</p><a href="https://www.google.com/maps/search/?api=1&query=Sofitel+Legend+Metropole+Hanoi" target="_blank" rel="noopener">Map</a></div>
+      <div class="stay"><span class="lvl">LUXURY</span><h4>Capella Hanoi</h4><p>Opera-themed, theatrical design, Michelin-starred Hibana downstairs. Same walkable Opera quarter. ~US$400–600.</p><a href="https://www.google.com/maps/search/?api=1&query=Capella+Hanoi" target="_blank" rel="noopener">Map</a></div>
+      <div class="stay"><span class="lvl mid">MID-LUXURY</span><h4>Peridot Grand Luxury Boutique Hotel</h4><p>Inside the Old Quarter, rooftop pool, a breakfast spread guests rave about. Walk to Ta Hien beer street and clubs. ~US$90–150.</p><a href="https://www.google.com/maps/search/?api=1&query=Peridot+Grand+Luxury+Boutique+Hotel+Hanoi" target="_blank" rel="noopener">Map</a></div>
+      <div class="stay"><span class="lvl mid">MID-LUXURY</span><h4>Hilton Hanoi Opera</h4><p>Big-hotel reliability for a large group, wide buffet, next to the Opera House. ~US$130–200.</p><a href="https://www.google.com/maps/search/?api=1&query=Hilton+Hanoi+Opera" target="_blank" rel="noopener">Map</a></div>
+    </div>
+    <div class="staycol">
+      <h3>Phu Quoc: south side, near Sunset Town</h3>
+      <div class="stay"><span class="lvl">LUXURY</span><h4>JW Marriott Phu Quoc Emerald Bay</h4><p>Bai Khem beach, wild "university" design, excellent breakfast. ~15 min by car to Sunset Town, cable car and An Thoi boat pier. ~US$300–500.</p><a href="https://www.google.com/maps/search/?api=1&query=JW+Marriott+Phu+Quoc+Emerald+Bay" target="_blank" rel="noopener">Map</a></div>
+      <div class="stay"><span class="lvl mid">MID-LUXURY · BEST LOCATION</span><h4>La Festa Phu Quoc, Curio Collection by Hilton</h4><p>Right inside Sunset Town: walk to Kiss Bridge, both night shows, bars and the cable car. Reviews praise the pho and Vietnamese-coffee station at breakfast. ~US$120–220.</p><a href="https://www.google.com/maps/search/?api=1&query=La+Festa+Phu+Quoc+Curio+Collection" target="_blank" rel="noopener">Map</a></div>
+      <div class="stay"><span class="lvl mid">MID-LUXURY · TOWN SIDE</span><h4>Seashells Phu Quoc Hotel &amp; Spa</h4><p>Duong Dong town, walk to the night market and beach bars. Longer ride south (~40 min). ~US$90–150.</p><a href="https://www.google.com/maps/search/?api=1&query=Seashells+Phu+Quoc+Hotel+Spa" target="_blank" rel="noopener">Map</a></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="moving"><div class="wrap">
+  <h2>Getting around, and the scooter question</h2>
+  <div class="callout">
+    <h3>Don't ride rental scooters on this trip</h3>
+    <p>Vietnam only recognises International Driving Permits issued under the 1968 Vienna Convention. Canadian and Indian IDPs are issued under the 1949 Geneva Convention, so neither is valid there. Shops will still hand over keys, but police checkpoints in tourist areas now target foreigners, fines rose sharply in 2025, and travel insurance typically won't cover an unlicensed rider.</p>
+    <ul>
+      <li><b>Ninh Binh:</b> rent bicycles in Tam Coc (no licence needed). Flat paddy roads, perfect for the group.</li>
+      <li><b>Phu Quoc:</b> book Grab or Xanh SM 7-seater electric cars; ride-hail motorbikes (with a driver) for 1–2 people.</li>
+      <li><b>Hanoi:</b> walk the Old Quarter; Grab cars between districts.</li>
+      <li><b>Day trips:</b> book a private 16- or 29-seat van with driver through your hotel for Ninh Binh and Lan Ha Bay.</li>
+    </ul>
+  </div>
+</div></section>
+
+<section id="skin"><div class="wrap">
+  <h2>Skin clinics in Hanoi</h2>
+  <p class="lede">Hanoi has the stronger dermatology scene. Book for Day 1 afternoon, and go for a consult, hydrating facial or gentle treatment rather than lasers or peels: two beach days and snorkelling right after mean strong sun on freshly treated skin.</p>
+  <div class="grid">
+    <div class="card" data-tier="$$"><h3>Lã Hà Dermatology Clinic</h3><div class="meta">Dermatologist-led · 12+ years · Fotona 4D, acne and pigmentation</div><p>Locally one of the most trusted names, medical and aesthetic under one roof. Ask for an English-speaking consultant when booking.</p><a href="https://www.google.com/maps/search/?api=1&query=La+Ha+Dermatology+Clinic+Hanoi" target="_blank" rel="noopener">Map</a></div>
+    <div class="card" data-tier="$$$"><h3>Hanoi French Hospital — Dermatology</h3><div class="meta">International hospital · English-speaking dermatologist</div><p>Dr. Nguyen Thi Hai Van handles IPL and Nd:YAG for acne, melasma and rejuvenation. Most formal, most international option.</p><a href="https://www.google.com/maps/search/?api=1&query=Hanoi+French+Hospital" target="_blank" rel="noopener">Map</a></div>
+    <div class="card" data-tier="$$"><h3>Rohto Aohal Clinic</h3><div class="meta">Japanese Rohto group · Ba Dinh</div><p>Japanese-standard skincare clinic, a short ride from the Old Quarter. Good for a facial and product routine.</p><a href="https://www.google.com/maps/search/?api=1&query=Rohto+Aohal+Clinic+Hanoi" target="_blank" rel="noopener">Map</a></div>
+  </div>
+</div></section>
+
+<section id="group"><div class="wrap">
+  <h2>Group notes</h2>
+  <div class="two">
+    <div class="callout" style="border-left-color:var(--sea)">
+      <h3>Getting everyone there</h3>
+      <ul>
+        <li><b>From India:</b> IndiGo flies daily non-stop to Hanoi from Delhi and Kolkata, and from Mumbai since late October. Akasa also flies Mumbai–Hanoi four times a week.</li>
+        <li><b>Arup &amp; wife:</b> you're already in Mumbai for the India trip, so fly with the India crew rather than a long-haul from Toronto.</li>
+        <li><b>Inside Vietnam:</b> Hanoi → Phu Quoc on Vietnam Airlines, Vietjet or Bamboo, ~2h10.</li>
+        <li><b>Home:</b> check Vietjet's Phu Quoc–Mumbai/Delhi direct days; otherwise connect back through Hanoi.</li>
+      </ul>
+    </div>
+    <div class="callout" style="border-left-color:var(--jade)">
+      <h3>Eating vegetarian</h3>
+      <p>Fish sauce hides in almost everything. Show these at street stalls:</p>
+      <p class="phr">Tôi ăn chay</p><p style="margin-top:0">"I eat vegetarian"</p>
+      <p class="phr">Không nước mắm</p><p style="margin-top:0">"No fish sauce"</p>
+      <p>Search "quán chay" on Google Maps for local vegetarian canteens, often near pagodas.</p>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">Prices, show times and opening hours change; confirm a week before you fly. Visas: every traveller needs Vietnam's e-visa (evisa.gov.vn), since Phu Quoc's visa-free rule only applies if you fly straight to the island and never leave it.</div></footer>
+
+<script>
+const M=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+const D=(o,d,mode)=>"https://www.google.com/maps/dir/?api=1&origin="+encodeURIComponent(o)+"&destination="+encodeURIComponent(d)+"&travelmode="+(mode||"driving");
+
+const days=[
+ {id:"day1",n:1,region:"north",title:"Hanoi: land, wander, eat",sub:"Fri · arrive early morning on the overnight flights from India",steps:[
+  ["07:00","Airport to hotel","Noi Bai to Old Quarter ~45 min by Grab 7-seater or hotel van. Drop bags, buffet breakfast if they'll let you in.",0,D("Noi Bai International Airport","Hoan Kiem Lake")],
+  ["10:00","Hoan Kiem Lake + Ngoc Son Temple","Easy loop, red Huc Bridge. Coffee break at Café Giảng for the original egg coffee.",0,M("Ngoc Son Temple Hanoi")],
+  ["12:30","Old Quarter street-food lunch","Bún chả at Hương Liên, or bánh mì at Bánh Mì 25 (veg filling on request).",0,M("Bun Cha Huong Lien Hanoi")],
+  ["14:30","Siesta, or skin clinic slot","Nap off the red-eye. Clinic appointment for your wife fits here.",0,""],
+  ["16:30","West Lake sunset cycle","Rent bikes and ride part of the 17 km West Lake loop. Optional.",1,M("Tran Quoc Pagoda Hanoi")],
+  ["18:30","Thang Long Water Puppet Theatre","~45-minute show, very Hanoi. Book seats a few days ahead.",0,M("Thang Long Water Puppet Theatre")],
+  ["20:00","Weekend Night Market + Ta Hien","Walking street opens Fri–Sun from Hàng Đào to Đồng Xuân. Then plastic stools and bia hơi on Tạ Hiện.",0,M("Ta Hien Beer Street Hanoi")],
+  ["23:00","1900 Le Théâtre","Hanoi's best-known club, peaks after 11 pm.",0,M("1900 Le Theatre Hanoi")]
+ ]},
+ {id:"day2",n:2,region:"north",title:"Ninh Binh: karsts, 500 steps, bikes, boats",sub:"Sat · the big active day · private van ~2h each way",steps:[
+  ["07:00","Van south","Breakfast early. Bring water, sunscreen, a light layer.",0,D("Hoan Kiem Lake","Hang Mua Ninh Binh")],
+  ["09:15","Hang Múa climb","~500 stone steps to the dragon ridge over Tam Coc. 30–40 min up, one of Vietnam's great views.",1,M("Hang Mua Ninh Binh")],
+  ["11:00","Cycle Tam Cốc's paddy roads","Bicycles from the village, flat lanes between limestone towers. 1–1.5h.",1,M("Tam Coc Ninh Binh")],
+  ["12:30","Lunch","Try cơm cháy (crispy rice). Vegetarians: plenty of tofu and mushroom dishes in Tam Coc cafés.",0,M("restaurants Tam Coc Ninh Binh")],
+  ["14:00","Tràng An rowing boat","UNESCO site, 2–3h route through caves and temples. Women rowers paddle with their feet.",0,M("Trang An Scenic Landscape Complex")],
+  ["17:30","Back to Hanoi","Nap in the van.",0,""],
+  ["20:30","Rooftop drinks","The Summit at Pan Pacific over West Lake, or stay central and do Hero Club.",0,M("The Summit Pan Pacific Hanoi")]
+ ]},
+ {id:"day3",n:3,region:"north",title:"Lan Ha Bay: kayak the karsts",sub:"Sun · day cruise · ~2.5h each way via expressway",steps:[
+  ["07:30","Van to the bay","Pick a Lan Ha Bay day cruise (quieter than Ha Long). Most include pickup.",0,D("Hoan Kiem Lake","Lan Ha Bay")],
+  ["10:30","Cruise + buffet lunch on board","Limestone islands, floating villages. Ask the operator for vegetarian meals when booking.",0,M("Lan Ha Bay")],
+  ["13:00","Kayak through lagoons and caves","~1 hour. Sea is ~20°C, so swimming is for the brave.",1,""],
+  ["17:00","Back to Hanoi","Arrive ~19:30.",0,""],
+  ["20:00","Last Hanoi night","Chả Cá Thăng Long for dinner, Kem Tràng Tiền ice cream, then Savage (techno, late) or Shark Club (bottle service).",0,M("Cha Ca Thang Long")],
+  ["Late","Pack","Early flight tomorrow.",0,""]
+ ]},
+ {id:"day4",n:4,region:"south",title:"Phu Quoc: cable car, sunset, shows",sub:"Mon · morning flight · swap jackets for swimwear",steps:[
+  ["07:00","Fly Hanoi → Phu Quoc","~2h10. Land mid-morning; drive to the south side.",0,D("Phu Quoc International Airport","Sunset Town Phu Quoc")],
+  ["11:30","Check in, beach lunch","Seafood by the water; plenty of Indian restaurants on Trần Hưng Đạo if anyone needs dal.",0,M("Sunset Town Phu Quoc")],
+  ["13:30","Hon Thom cable car","One of the world's longest sea-crossing cable cars, ~15 min over the islands. Afternoon at Hon Thom beach or Aquatopia water park.",1,M("Hon Thom Cable Car Station An Thoi")],
+  ["17:30","Kiss Bridge at sunset","The two half-bridges that don't quite meet. Free to walk; the shot of the trip.",0,M("Kiss Bridge Sunset Town Phu Quoc")],
+  ["19:45","Symphony of the Sea","Jet-ski and flyboard stunts with fireworks, short and loud.",0,M("Sunset Town Phu Quoc")],
+  ["21:00","Kiss of the Sea","Multimedia show on a sea stage: water projections, fire, lasers, fireworks. ~950k–1M VND.",0,M("Kiss of the Sea Show Phu Quoc")],
+  ["22:00","Sunset Town bars","Sun Bavaria GastroPub and the seafront bars.",0,""]
+ ]},
+ {id:"day5",n:5,region:"south",title:"Islands, snorkel, night market, fly",sub:"Tue · best sea of the trip",steps:[
+  ["08:00","4-island speedboat tour","From An Thoi: Mây Rút, Gầm Ghì, Móng Tay. Snorkelling on coral, lunch on a sandbar. Back ~14:00.",1,M("An Thoi Port Phu Quoc")],
+  ["14:30","Sao Beach or spa","White sand on the east coast, or a massage at the hotel.",0,M("Sao Beach Phu Quoc")],
+  ["17:00","Grand World + Dương Đông","Free-entry Venice-style quarter, then pearls, pepper and sim wine at the Dương Đông night market.",0,M("Duong Dong Night Market Phu Quoc")],
+  ["19:30","Farewell dinner","Ra Khơi for seafood, or Tempus Fugit at JW Marriott for a splurge.",0,M("Ra Khoi Restaurant Phu Quoc")],
+  ["Late","Fly out","Late flight or stay a 5th night and fly Wednesday morning.",0,""]
+ ]}
+];
+
+const dl=document.getElementById("dayList");
+dl.innerHTML=days.map((d,i)=>`<details class="day" id="${d.id}" data-region="${d.region}"${i===0?" open":""}>
+<summary><span class="dnum">${d.n}</span><span class="dtitle"><h3>${d.title}</h3><small>${d.sub}</small></span><span class="chev" aria-hidden="true">▸</span></summary>
+<ul class="steps">${d.steps.map(s=>`<li><span class="t">${s[0]}</span><div><b>${s[1]}</b>${s[3]?'<span class="tag a">Active</span>':''}<p>${s[2]}${s[4]?` <a class="dir" href="${s[4]}" target="_blank" rel="noopener">Directions</a>`:''}</p></div></li>`).join("")}</ul></details>`).join("");
+document.querySelectorAll('.stop').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t&&t.tagName==='DETAILS')t.open=true;}));
+
+const P=[
+ // Hanoi food
+ ["Bún Chả Hương Liên","Hanoi","Food","$","Grilled pork with noodles, the Obama-Bourdain table. Go at lunch.",0,0],
+ ["Phở Gia Truyền, 49 Bát Đàn","Hanoi","Food","$","Queue-and-sit-on-a-stool beef pho; closes when it sells out, go before 9 am.",0,0],
+ ["Bánh Mì 25","Hanoi","Food","$","Hàng Cá favourite with a vegetarian banh mi option.",1,0],
+ ["Chả Cá Thăng Long","Hanoi","Food","$$","Turmeric fish sizzled with dill at the table. Great group dinner.",0,0],
+ ["Ưu Đàm Chay","Hanoi","Food","$$$","Michelin-recommended vegetarian, beautiful room. Book for the whole group.",1,1],
+ ["Tandoor Hanoi","Hanoi","Food","$$","Long-running Indian near the Old Quarter for a dal-and-roti night.",1,0],
+ ["Gia Restaurant","Hanoi","Food","$$$$","Michelin-starred modern Vietnamese tasting menu by the Temple of Literature.",0,1],
+ ["Hibana by Koki","Hanoi","Food","$$$$","Michelin-starred teppanyaki in the Capella basement.",0,0],
+ // Hanoi dessert
+ ["Café Giảng","Hanoi","Dessert","$","The original egg coffee, since 1946.",1,0],
+ ["Kem Tràng Tiền","Hanoi","Dessert","$","Hanoi's classic ice-cream stand; eat it on the pavement like locals.",1,0],
+ ["Chè Bốn Mùa","Hanoi","Dessert","$","Vietnamese sweet soups with beans, jellies and coconut.",1,1],
+ ["Bánh Cốm Nguyên Ninh","Hanoi","Dessert","$","Green young-rice cakes from a century-old shop on Hàng Than.",1,1],
+ // Hanoi shows
+ ["Thang Long Water Puppet Theatre","Hanoi","Show","$","Puppets on water with live folk music. ~45 min.",0,0],
+ ["Hanoi Opera House (Lune Production shows)","Hanoi","Show","$$$","Acrobatic bamboo circus shows rotate here; check the schedule for your dates.",0,0],
+ // Hanoi shopping
+ ["Đồng Xuân Market","Hanoi","Shop cheap","$","Huge covered market: clothes, coffee, snacks, souvenirs.",0,0],
+ ["Hanoi Weekend Night Market","Hanoi","Shop cheap","$","Fri–Sun evenings from Hàng Đào. Bargain hard.",0,0],
+ ["Hàng Gai silk & tailors","Hanoi","Shop cheap","$$","Silk scarves, áo dài and 24-hour tailoring.",0,0],
+ ["Tan My Design","Hanoi","Shop luxe","$$$","Three floors of Vietnamese designer linen, homeware and fashion.",0,1],
+ ["Tràng Tiền Plaza","Hanoi","Shop luxe","$$$$","Luxury brands by the Opera House.",0,0],
+ ["Lotte Mall West Lake","Hanoi","Shop luxe","$$$","The city's biggest modern mall.",0,0],
+ // Hanoi nightlife
+ ["1900 Le Théâtre","Hanoi","Nightlife","$$","Hanoi's flagship club on Tạ Hiện. Peaks after 11 pm.",0,0],
+ ["Tạ Hiện Beer Street","Hanoi","Nightlife","$","Fresh bia hơi on tiny stools; street party every night.",0,0],
+ ["Savage Hanoi","Hanoi","Nightlife","$$","Techno and house club out in Tây Hồ for the late crowd.",0,1],
+ ["Hero Club Hanoi","Hanoi","Nightlife","$$","Big-room EDM, central.",0,0],
+ ["The Summit, Pan Pacific Hanoi","Hanoi","Nightlife","$$$","Rooftop cocktails over West Lake.",0,0],
+ // Phu Quoc food
+ ["Bún Quậy Kiến Xây","Phu Quoc","Food","$","Island-only noodle soup you stir yourself. Local queues.",0,1],
+ ["Ra Khơi Restaurant","Phu Quoc","Food","$$","Seafood in Dương Đông: pick it from the tank.",0,0],
+ ["Indian restaurants, Trần Hưng Đạo","Phu Quoc","Food","$$","Several Indian kitchens along the main strip.",1,0],
+ ["Tempus Fugit at JW Marriott","Phu Quoc","Food","$$$$","The farewell-dinner splurge in a whimsical setting.",0,0],
+ ["Sailing Club Phu Quoc","Phu Quoc","Food","$$$","Beachfront dinner that turns into a party.",0,0],
+ // PQ dessert
+ ["Dương Đông night-market sweets","Phu Quoc","Dessert","$","Rolled ice cream, chè, grilled sticky rice.",1,0],
+ ["Sim wine tasting","Phu Quoc","Dessert","$","Sweet rose-myrtle wine, an island speciality; tastings at the market.",1,1],
+ // PQ shows
+ ["Kiss of the Sea","Phu Quoc","Show","$$$","21:00 nightly at Sunset Town. Water domes, fire, lasers, fireworks.",0,0],
+ ["Symphony of the Sea","Phu Quoc","Show","$$","19:45 jet-ski and flyboard stunt show at Sunset Town Beach.",0,0],
+ // PQ shopping
+ ["Dương Đông Night Market","Phu Quoc","Shop cheap","$","Pearls, pepper, fish sauce, souvenirs. Bargain.",0,0],
+ ["Grand World Phu Quoc","Phu Quoc","Shop cheap","$$","Free-entry canal town with shops and street shows.",0,0],
+ ["Ngọc Hiền Pearl","Phu Quoc","Shop luxe","$$$","Pearl farm showroom; certified pieces.",0,0],
+ ["Vincom Plaza Phu Quoc","Phu Quoc","Shop luxe","$$","Modern mall for anything you forgot.",0,0],
+ // PQ nightlife
+ ["Ocsen Beach Bar & Club","Phu Quoc","Nightlife","$$","Long Beach party bar with DJs and fire shows.",0,0],
+ ["Sun Bavaria GastroPub","Phu Quoc","Nightlife","$$","Brewpub with its own magic show in Sunset Town.",0,0]
+];
+let city="all",cat="all";
+const grid=document.getElementById("grid"),count=document.getElementById("count");
+function render(){
+  const list=P.filter(p=>(city==="all"||p[1]===city)&&(cat==="all"||(cat==="Veg"?p[5]:p[2]===cat)));
+  count.textContent=list.length+" places";
+  grid.innerHTML=list.map(p=>`<div class="card" data-tier="${p[3]}"><h3>${p[0]}${p[5]?'<span class="veg">VEG</span>':''}${p[6]?'<span class="gem">Hidden gem</span>':''}</h3><div class="meta">${p[1]} · ${p[2].replace("Shop cheap","Shopping, cheap").replace("Shop luxe","Shopping, upscale")} · ${p[3]}</div><p>${p[4]}</p><a href="${M(p[0]+" "+p[1])}" target="_blank" rel="noopener">Directions in Google Maps</a></div>`).join("");
+}
+function bind(sel,set){document.querySelectorAll(sel+" button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(sel+" button").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");set(b);render();}))}
+bind(".chips.city",b=>city=b.dataset.city);
+bind(".chips.cat",b=>cat=b.dataset.cat);
+render();
+</script>
+</body>
+</html>

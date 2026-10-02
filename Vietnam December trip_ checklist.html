@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vietnam December trip: checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2EF; --surface:#FFFFFF; --ink:#16302B; --muted:#55685F; --line:#CFDAD3;
+  --red:#B3261E; --gold:#D99A1E; --sea:#1F7A8C; --jade:#2F6B55; --chip:#E1E9E4;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0F1C19;--surface:#17271F;--ink:#E4ECE8;--muted:#9DB0A7;--line:#2B3F36;--red:#E5655C;--gold:#E8B54A;--sea:#58B4C6;--jade:#6FBF9A;--chip:#22352C}
+}
+:root[data-theme="dark"]{--bg:#0F1C19;--surface:#17271F;--ink:#E4ECE8;--muted:#9DB0A7;--line:#2B3F36;--red:#E5655C;--gold:#E8B54A;--sea:#58B4C6;--jade:#6FBF9A;--chip:#22352C}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "Be Vietnam Pro",system-ui,-apple-system,Segoe UI,sans-serif}
+h1,h2{font-family:"Young Serif",Georgia,serif;font-weight:400;line-height:1.15;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+header{padding:34px 0 18px}
+h1{font-size:clamp(2rem,7vw,3.2rem)}
+header p{color:var(--muted);margin:10px 0 0;max-width:56ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--line)}
+.track{height:12px;border-radius:999px;background:var(--chip);overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--gold),var(--sea));transition:width .3s}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+.barrow{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:.9rem;color:var(--muted)}
+.barrow button{font:inherit;font-size:.85rem;background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
+.barrow label{display:flex;gap:6px;align-items:center;cursor:pointer}
+section{margin:22px 0}
+section h2{font-size:1.4rem;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+section h2 small{font-family:"Be Vietnam Pro",sans-serif;font-size:.85rem;color:var(--muted)}
+section>p{margin:4px 0 10px;color:var(--muted);font-size:.9rem}
+ul{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+li{border-top:1px solid var(--line)}
+li:first-child{border-top:0}
+li label{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:12px 14px;cursor:pointer;align-items:start}
+li input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--jade)}
+li .txt b{font-weight:600}
+li .txt span{display:block;font-size:.86rem;color:var(--muted)}
+li.done .txt b{text-decoration:line-through;text-decoration-color:var(--jade);color:var(--muted)}
+.when{display:inline-block;font-size:.72rem;font-weight:600;background:var(--chip);border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:2px}
+.hot{background:var(--red);color:#fff}
+body.hide li.done{display:none}
+input:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+footer{color:var(--muted);font-size:.85rem;padding:20px 0 50px}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <h1>Book it, pack it, tick it.</h1>
+  <p>Group checklist for the Hanoi → Ninh Binh → Lan Ha Bay → Phu Quoc trip, late December. Ticks save on this device.</p>
+</header>
+<div class="bar"><div class="wrap">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="barrow"><span id="prog">0 of 0 done</span>
+    <span style="display:flex;gap:10px;align-items:center"><label><input type="checkbox" id="hide"> Hide done</label><button id="reset" type="button">Clear all</button></span></div>
+</div></div>
+<main class="wrap" id="main"></main>
+<footer class="wrap">Confirm visa rules, show times and flight schedules a week before departure.</footer>
+<script>
+const S=[
+ {t:"Visas & documents",n:"Every traveller, Indian and Canadian passports alike.",i:[
+  ["Passport valid 6+ months past arrival, 2 blank pages","",""],
+  ["Apply for the Vietnam e-visa on evisa.gov.vn","US$25, up to 90 days. Use only the .gov.vn site; lookalike sites overcharge.","now"],
+  ["Double-check name, passport number and dates on the approval","Mismatches can get you denied boarding.",""],
+  ["Print the e-visa and save a PDF offline","",""],
+  ["Remember: Phu Quoc visa-free doesn't apply to us","It only covers flying straight to the island and staying there.",""],
+  ["Travel insurance that covers kayaking and snorkelling","",""]
+ ]},
+ {t:"Flights",n:"",i:[
+  ["India crew: book into Hanoi (HAN), landing Day 1 morning","IndiGo daily from Delhi, Kolkata, Mumbai; Akasa Mumbai 4×/week.","now"],
+  ["Arup & wife: Mumbai → Hanoi with the India crew","Already in Mumbai for the India trip.","now"],
+  ["Group booking Hanoi → Phu Quoc, Day 4 ~7 am","Vietnam Airlines, Vietjet or Bamboo.","now"],
+  ["Phu Quoc → home, Day 5 night (or Day 6 morning)","Check Vietjet's direct days to Mumbai/Delhi.",""],
+  ["Check checked-bag allowance on budget carriers","Buy bags online; airport rates are higher.",""]
+ ]},
+ {t:"Stays",n:"December fills fast around Christmas.",i:[
+  ["Hanoi hotel, 3 nights (Old Quarter / Opera area)","Book the night before Day 1 too if you want a guaranteed room at 7 am.","now"],
+  ["Phu Quoc hotel, 1–2 nights near Sunset Town","La Festa for location, JW Marriott for luxury.","now"],
+  ["Confirm buffet breakfast is in the rate","",""]
+ ]},
+ {t:"Activities & tables",n:"",i:[
+  ["Private van with driver, Ninh Binh (Day 2)","16- or 29-seater via the hotel.",""],
+  ["Lan Ha Bay day cruise with kayaking (Day 3)","Ask for vegetarian meals on board.",""],
+  ["Water puppet tickets (Day 1 evening)","",""],
+  ["Kiss of the Sea tickets (Day 4, 21:00)","~950k–1M VND per person.",""],
+  ["4-island snorkelling speedboat tour (Day 5)","Departs An Thoi.",""],
+  ["Skin clinic appointment for wife (Day 1 afternoon)","Gentle treatments only before beach days.",""],
+  ["Group dinner reservation: Ưu Đàm Chay or Gia","",""]
+ ]},
+ {t:"Money, phone, apps",n:"",i:[
+  ["Some Vietnamese dong in cash","Street food and markets are cash-only. Roughly 26,000 VND = US$1.",""],
+  ["Card with no foreign-transaction fee","",""],
+  ["eSIM or local SIM sorted","",""],
+  ["Install Grab and Xanh SM","Book 7-seaters for the group.",""],
+  ["Offline Google Maps: Hanoi and Phu Quoc","",""],
+  ["Offline Vietnamese in Google Translate","",""],
+  ["Shared expense group set up (Splitwise)","",""]
+ ]},
+ {t:"Pack for the north",n:"Hanoi and the bays: 15–21°C, cool evenings.",i:[
+  ["Light jacket or fleece","",""],
+  ["Closed shoes with grip for the 500 steps at Hang Múa","",""],
+  ["Quick-dry layers for kayaking","",""],
+  ["Going-out outfit for the clubs","",""]
+ ]},
+ {t:"Pack for Phu Quoc",n:"25–30°C, strong sun.",i:[
+  ["Swimwear ×2","",""],
+  ["Reef-safe sunscreen SPF 50, hat, sunglasses","",""],
+  ["Water shoes for snorkelling","",""],
+  ["Small dry bag for the boat day","",""]
+ ]},
+ {t:"Everything else",n:"",i:[
+  ["Plug adapter for two-pin sockets (A/C), 220V","",""],
+  ["Basic meds + motion-sickness tablets for boats","",""],
+  ["Veg phrase saved: \"Tôi ăn chay, không nước mắm\"","I eat vegetarian, no fish sauce.",""],
+  ["Agree as a group: no rental scooters","Our IDPs aren't valid in Vietnam. Use bicycles, Grab and vans.",""]
+ ]}
+];
+const KEY="vn-dec-checklist-v1";
+let st={};try{st=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){st={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const main=document.getElementById("main");
+main.innerHTML=S.map((s,si)=>`<section><h2>${s.t}<small id="c${si}"></small></h2>${s.n?`<p>${s.n}</p>`:""}<ul>${s.i.map((it,ii)=>{const id=`i${si}-${ii}`;return `<li id="li-${id}"><label><input type="checkbox" data-id="${id}" data-s="${si}"><span class="txt"><b>${it[0]}</b>${it[2]==="now"?'<span class="when hot" style="display:inline-block">Do now</span>':''}${it[1]?`<span>${it[1]}</span>`:""}</span></label></li>`}).join("")}</ul></section>`).join("");
+const boxes=[...document.querySelectorAll('input[data-id]')];
+function update(){
+  let done=0;
+  boxes.forEach(b=>{b.checked=!!st[b.dataset.id];document.getElementById("li-"+b.dataset.id).classList.toggle("done",b.checked);if(b.checked)done++;});
+  document.getElementById("fill").style.width=(boxes.length?done/boxes.length*100:0)+"%";
+  document.getElementById("prog").textContent=done+" of "+boxes.length+" done";
+  S.forEach((s,si)=>{const bs=boxes.filter(b=>b.dataset.s==si);document.getElementById("c"+si).textContent=bs.filter(b=>b.checked).length+"/"+bs.length;});
+}
+boxes.forEach(b=>b.addEventListener("change",()=>{st[b.dataset.id]=b.checked;save();update();}));
+document.getElementById("reset").addEventListener("click",()=>{if(confirm("Clear every tick?")){st={};save();update();}});
+const hide=document.getElementById("hide");
+hide.addEventListener("change",()=>document.body.classList.toggle("hide",hide.checked));
+update();
+</script>
+</body>
+</html>
